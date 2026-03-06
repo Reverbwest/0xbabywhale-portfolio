@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>0xbabywhale — Web3 Community & Growth</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --off-white: #f5f3ef;
+      --warm-white: #faf9f7;
+      --ink: #1a1a1a;
+      --muted: #7a7570;
+      --accent: #1a6b4a;
+      --accent-light: #e8f3ee;
+      --border: #e2ddd8;
+      --evm: #627EEA;
+      --aptos: #00C2A8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Instrument Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(250,249,247,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-text { }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.4rem 0.85rem;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.35s forwards;
+    }
+
+    .hero-chains {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.45s forwards;
+    }
+
+    .chain-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.3rem 0.7rem;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+    }
+
+    .chain-evm { background: #eef1fd; color: var(--evm); }
+    .chain-aptos { background: #e6faf8; color: #00997f; }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.55s forwards;
+    }
+
+    .btn-primary {
+      padding: 0.8rem 1.8rem;
+      background: var(--ink);
+      color: var(--off-white);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+    .btn-secondary {
+      padding: 0.8rem 1.8rem;
+      background: transparent;
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover { border-color: var(--ink); transform: translateY(-1px); }
+
+    /* HERO VISUAL */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.6s forwards;
+    }
+
+    .hero-card {
+      width: 100%;
+      max-width: 380px;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 2rem;
+      width: 3rem; height: 3px;
+      background: var(--accent);
+    }
+
+    .card-handle {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat { }
+
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .card-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .card-roles {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .role-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .role-dot {
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 3rem;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      color: var(--ink);
+      margin-bottom: 3.5rem;
+      line-height: 1.1;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--warm-white);
+      padding: 2.5rem;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px; width: 0;
+      background: var(--accent);
+      transition: width 0.35s ease;
+    }
+
+    .project-card:hover { background: var(--off-white); }
+    .project-card:hover::after { width: 100%; }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--ink);
+    }
+
+    .project-role-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 2px;
+    }
+
+    /* SKILLS */
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .skills-intro {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      position: sticky;
+      top: 8rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .skill-group { }
+
+    .skill-group-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .skill-list li {
+      font-size: 0.88rem;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .skill-list li::before {
+      content: '—';
+      color: var(--border);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* CONNECT */
+    #connect {
+      border-top: 1px solid var(--border);
+    }
+
+    .connect-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .connect-text h2 { margin-bottom: 1rem; }
+
+    .connect-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .socials-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--ink);
+      transition: border-color 0.2s, background 0.2s;
+      background: transparent;
+    }
+
+    .social-item:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .social-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .social-platform {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .social-handle {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .social-arrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .social-item:hover .social-arrow {
+      transform: translateX(4px);
+      color: var(--accent);
+    }
+
+    /* AVAILABILITY */
+    .avail-card {
+      background: var(--ink);
+      padding: 2.5rem;
+      color: var(--off-white);
+    }
+
+    .avail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #4ade80;
+      margin-bottom: 1.5rem;
+    }
+
+    .avail-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s ease infinite;
+    }
+
+    .avail-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--off-white);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .avail-desc {
+      font-size: 0.85rem;
+      color: #9a9590;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .avail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .avail-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid #2e2e2e;
+      color: #9a9590;
+      border-radius: 2px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-left {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* DIVIDER LINE */
+    .full-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 3rem; }
+      .hero-visual { order: -1; }
+      section { padding: 4rem 1.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .skills-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .skills-intro { position: static; }
+      .connect-inner { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">0xbabywhale.eth</div>
+    <ul class="nav-links">
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-tag">Available for opportunities</div>
+      <h1>Web3 Community<br />&amp; <em>Growth</em> Specialist</h1>
+      <p class="hero-sub">
+        I build, grow, and sustain Web3 communities — from onboarding traders to leading DAOs. Focused on Ethereum EVM and Aptos ecosystems.
+      </p>
+      <div class="hero-chains">
+        <span class="chain-badge chain-evm">Ethereum / EVM</span>
+        <span class="chain-badge chain-aptos">Aptos</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">View Work</a>
+        <a href="#connect" class="btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="card-handle">0xbabywhale</div>
+        <div class="card-title">Community & Growth · Web3</div>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-num">4+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Ecosystems</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Roles Held</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Frens Made</div>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-roles">
+          <div class="role-item"><span class="role-dot"></span>Community Lead</div>
+          <div class="role-item"><span class="role-dot"></span>Head of Content</div>
+          <div class="role-item"><span class="role-dot"></span>Collab Manager</div>
+          <div class="role-item"><span class="role-dot"></span>Growth Partner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="reveal">
+      <div class="section-label">Selected Work</div>
+      <h2>Projects &amp; Roles</h2>
+    </div>
+    <div class="projects-grid reveal">
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">Xyra Labs</div>
+          <span class="project-role-badge">Growth Partner</span>
+        </div>
+        <p class="project-desc">
+          Served as Ambassador and Growth Partner for Xyra Labs, a perpetuals DEX on the EVM ecosystem. Focused on targeted outreach and onboarding active traders into the protocol — bridging the gap between crypto-native traders and the platform's liquidity infrastructure.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Perp DEX</span>
+          <span class="tag">EVM</span>
+          <span class="tag">Trader Onboarding</span>
+          <span class="tag">Ambassador</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">Fliq Predictions</div>
+          <span class="project-role-badge">Head of Content</span>
+        </div>
+        <p class="project-desc">
+          Led content strategy as Head of Content, working directly alongside the Head of Marketing to drive brand awareness and user growth. Responsible for crafting narratives, campaign copy, and educational content that communicated the platform's value to a Web3-native audience.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Content Strategy</span>
+          <span class="tag">Marketing</span>
+          <span class="tag">Prediction Markets</span>
+          <span class="tag">Growth</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">AlHalal DAO</div>
+          <span class="project-role-badge">Community Lead</span>
+        </div>
+        <p class="project-desc">
+          Spearheaded community operations as Lead — securing strategic collaborations, organizing IRL meetups and community events, and maintaining a healthy, engaged membership base. Responsible for both the culture and the coordination infrastructure of the DAO.
+        </p>
+        <div class="project-tags">
+          <span class="tag">DAO</span>
+          <span class="tag">Community Ops</span>
+          <span class="tag">IRL Events</span>
+          <span class="tag">Partnerships</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">NFT Projects</div>
+          <span class="project-role-badge">Collab Manager</span>
+        </div>
+        <p class="project-desc">
+          Worked across multiple NFT collections as Collaboration Manager — identifying and establishing partnerships with complementary projects, coordinating cross-community activations, and contributing to pre and post-mint growth strategies.
+        </p>
+        <div class="project-tags">
+          <span class="tag">NFTs</span>
+          <span class="tag">Collabs</span>
+          <span class="tag">Partnership Dev</span>
+          <span class="tag">EVM</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="skills-layout">
+      <div class="skills-intro reveal">
+        <div class="section-label">Capabilities</div>
+        <h2>What I<br /><em style="font-family:'DM Serif Display',serif; font-style:italic;">Bring</em></h2>
+        <p>
+          A combination of strategic thinking and hands-on execution — from crafting content that converts to managing communities that retain. I operate at the intersection of culture, growth, and Web3 infrastructure.
+        </p>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-group">
+          <div class="skill-group-name">Community</div>
+          <ul class="skill-list">
+            <li>Discord Management</li>
+            <li>Telegram Ops</li>
+            <li>DAO Governance</li>
+            <li>IRL & Virtual Events</li>
+            <li>Member Retention</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-name">Growth</div>
+          <ul class="skill-list">
+            <li>User Onboarding</li>
+            <li>KOL Outreach</li>
+            <li>Collab Management</li>
+            <li>Twitter / X Growth</li>
+            <li>Campaign Execution</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-name">Content</div>
+          <ul class="skill-list">
+            <li>Content Strategy</li>
+            <li>Copywriting</li>
+            <li>Thread Writing</li>
+            <li>Newsletter / Announcements</li>
+            <li>Brand Voice</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-name">Ecosystems</div>
+          <ul class="skill-list">
+            <li>Ethereum / EVM</li>
+            <li>Aptos</li>
+            <li>DeFi & Perp DEXs</li>
+            <li>NFT Culture</li>
+            <li>Prediction Markets</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-name">Tools</div>
+          <ul class="skill-list">
+            <li>Zealy / Galxe Campaigns</li>
+            <li>Notion / Coordination</li>
+            <li>Twitter / X</li>
+            <li>Discord Bots & Moderation</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-name">Soft Skills</div>
+          <ul class="skill-list">
+            <li>Stakeholder Management</li>
+            <li>Partnership Negotiations</li>
+            <li>Cross-team Collaboration</li>
+            <li>Async Communication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- CONNECT -->
+  <section id="connect">
+    <div class="connect-inner">
+      <div class="connect-text reveal">
+        <div class="section-label">Let's Work</div>
+        <h2>Open to<br /><em style="font-family:'DM Serif Display',serif; font-style:italic;">Opportunities</em></h2>
+        <p class="connect-sub">
+          Looking to join a project where community and growth are taken seriously. Whether you're a DAO, a DeFi protocol, or an NFT ecosystem — let's talk.
+        </p>
+        <div class="socials-list">
+          <a class="social-item" href="https://twitter.com/0xbabywhale" target="_blank">
+            <div class="social-left">
+              <span class="social-platform">X / Twitter</span>
+              <span class="social-handle">@0xbabywhale</span>
+            </div>
+            <span class="social-arrow">→</span>
+          </a>
+          <a class="social-item" href="https://discord.com" target="_blank">
+            <div class="social-left">
+              <span class="social-platform">Discord</span>
+              <span class="social-handle">0xbabywhale</span>
+            </div>
+            <span class="social-arrow">→</span>
+          </a>
+          <a class="social-item" href="https://t.me/babywhale0x" target="_blank">
+            <div class="social-left">
+              <span class="social-platform">Telegram</span>
+              <span class="social-handle">@babywhale0x</span>
+            </div>
+            <span class="social-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="avail-card reveal">
+        <div class="avail-badge">
+          <span class="avail-dot"></span>
+          Available Now
+        </div>
+        <div class="avail-title">Ready for the<br />next mission.</div>
+        <p class="avail-desc">
+          Open to full-time, part-time, and project-based roles. I thrive in fast-moving environments where community is a core growth lever, not an afterthought.
+        </p>
+        <div class="avail-tags">
+          <span class="avail-tag">Community Lead</span>
+          <span class="avail-tag">Growth Manager</span>
+          <span class="avail-tag">Head of Content</span>
+          <span class="avail-tag">Collab Manager</span>
+          <span class="avail-tag">Remote / Async</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">© 2025 · 0xbabywhale · All rights reserved</div>
+    <div class="footer-right">Built for Web3</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
